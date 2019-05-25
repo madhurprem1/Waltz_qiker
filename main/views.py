@@ -21,14 +21,14 @@ def emp_list(request):
     """
     employee_list_upadate = []
     counter = 0
-    counter_flag = False
 
     if request.method == 'GET':
+        # to count million no of records
         count = Employee.objects.all().count()  # 1 million
         chunk_size = 1000
-
+        # find date of 14 days before
         some_day_last_week = timezone.now().date() - timedelta(days=15)
-        next_day = timezone.now().date() + timedelta(days=1)
+        next_day = timezone.now().date() + timedelta(days=1)# This is next day
 
         for i in range(0, count, chunk_size):
             '''
@@ -44,12 +44,12 @@ def emp_list(request):
             waltz_length = len(posts_waltz)
             counter_waltz=0
             counter_foutreen=0
+
             for post in posts:
                 counter+=1
                 employee_dict_upadate={'employee_code':post.employee_code,'department':post.department, 'score':post.score}
                 employee_list_upadate.append(employee_dict_upadate)
                 if counter%4==0:
-                    counter_flag=True
                     for waltz in range(waltz_length):
 
                         employee_dict_upadate = {'employee_code': posts_waltz[counter_waltz].employee_code, 'department': posts_waltz[counter_waltz].department,
@@ -72,7 +72,7 @@ def emp_list(request):
         return Response(new_update_dict)
 
 
-# @api_view(['GET'])
+# class based view
 class ParmList(APIView):
 
     def get(get, request):
@@ -97,6 +97,7 @@ class ParmList(APIView):
                     for post in posts:
                         counter+=1
                         emp_list.append(post.employee_code)
+                        # count 20 beacaue need 20 records in list
                         if counter==20:
                             break
                 employee_dict={'employee':emp_list}
